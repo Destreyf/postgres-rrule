@@ -60,8 +60,8 @@ CREATE OR REPLACE FUNCTION _rrule.occurrences(
 RETURNS SETOF TIMESTAMP AS $$
   WITH "rrules" AS (
     SELECT
-      "rruleset"."dtstart",
-      "rruleset"."dtend",
+      COALESCE("rruleset"."dtstart",LOWER("tsrange")) as "dtstart",
+      COALESCE("rruleset"."dtend",UPPER("tsrange")) as "dtend",
       "rruleset"."rrule"
   ),
   "rdates" AS (
@@ -72,8 +72,8 @@ RETURNS SETOF TIMESTAMP AS $$
   ),
   "exrules" AS (
     SELECT
-      "rruleset"."dtstart",
-      "rruleset"."dtend",
+      COALESCE("rruleset"."dtstart",LOWER("tsrange")) as "dtstart",
+      COALESCE("rruleset"."dtend",UPPER("tsrange")) as "dtend",
       "rruleset"."exrule"
   ),
   "exdates" AS (
